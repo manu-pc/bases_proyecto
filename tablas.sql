@@ -76,3 +76,54 @@ CREATE TABLE pertenecer_estilo(
     ON UPDATE CASCADE
     PRIMARY KEY (id_creador, estilo)
 );
+
+CREATE TABLE prestamo_previo(
+    fecha_prestamo DATE,
+    fecha_devolucion DATE,
+    socio_prestamo VARCHAR(9),
+    empleado_prestamo CHAR(9),
+    material VARCHAR(9),
+    FOREIGN KEY (socio_prestamo) REFERENCES socio(idsocio)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
+    FOREIGN KEY (empleado_prestamo) REFERENCES empleado(DNI)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
+    FOREIGN KEY (material) REFERENCES material_prestamo(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+    PRIMARY KEY (fecha_prestamo, socio_prestamo, empleado_prestamo, material)
+);
+
+CREATE TABLE ordenador(
+    ID_ordenador VARCHAR(9) PRIMARY KEY,
+    SO VARCHAR(10),
+    modelo VARCHAR(20),
+    usuario  VARCHAR(9),
+    fecha_prestamo DATE,
+    empleado_prestamo CHAR(9),
+    FOREIGN KEY (usuario) REFERENCES socio(idsocio)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE
+    FOREIGN KEY (empleado_prestamo) REFERENCES empleado(DNI)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE uso_previo(
+    fecha_prestamo DATE,
+    ID_ordenador VARCHAR(9),
+    usuario  VARCHAR(9),
+    fecha_devolucion DATE,
+    empleado_prestamo CHAR(9),
+    FOREIGN KEY (usuario) REFERENCES socio(idsocio)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
+    FOREIGN KEY (empleado_prestamo) REFERENCES empleado(DNI)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
+    FOREIGN KEY (ID_ordenador) REFERENCES ordenador(ID_ordenador)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+    PRIMARY KEY (fecha_prestamo, usuario, empleado_prestamo, ID_ordenador)
+);
