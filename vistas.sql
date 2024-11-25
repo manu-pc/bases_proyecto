@@ -3,7 +3,7 @@
 CREATE VIEW vista_prestamos_actuales AS
 SELECT 
     mp.id AS id_material,
-    mp.titulo AS titpueulo_material,
+    mp.titulo AS titulo_,
     mp.tipo AS tipo_material,
     s.id_socio AS id_socio,
     s.nombre AS nombre_socio,
@@ -23,3 +23,35 @@ LEFT JOIN
 WHERE 
     mp.fecha_prestamo IS NOT NULL;
     -- só inclúe os materiais actualmente en préstamo
+
+-- Crea unha vista que amose os materiais dispoñibles.
+-- Inclúe o id do material, o título do material, o tipo do material, o nome do creador e a data de publicación.
+CREATE VIEW vista_materiales_disponibles AS
+SELECT 
+    mp.id AS id_material,
+    mp.titulo AS titulo_material,
+    mp.tipo AS tipo_material,
+    c.nombre AS nombre_creador,
+    mp.fecha_publicacion
+FROM
+    material_prestamo mp
+JOIN    
+    creador c ON mp.creador = c.idcreador
+WHERE 
+    mp.disponible = TRUE;
+    -- só inclúe os materiais dispoñibles
+
+-- Crea unha vista que amose os empregados con cargo de bibliotecario.
+-- Inclúe o dni do empregado, o nome do empregado e o seu cargo (que é bibliotecario).
+CREATE VIEW vista_bibliotecarios AS
+SELECT 
+    e.dni AS dni_empleado,
+    e.nombre AS nombre_empleado,
+    c.cargo
+FROM
+    empleado e
+JOIN
+    cargo c ON e.dni = c.dni_empleado
+WHERE
+    c.cargo = 'bibliotecario';
+    -- só inclúe os empregados con cargo de bibliotecario

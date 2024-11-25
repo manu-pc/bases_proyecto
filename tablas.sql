@@ -9,7 +9,7 @@ create table socio(
 );
 
 CREATE TABLE empleado(
-    DNI CHAR(9) PRIMARY KEY,
+    dni CHAR(9) PRIMARY KEY,
     nombre VARCHAR(20) NOT NULL,
     apellido1 VARCHAR(20) NOT NULL,
     apellido2 VARCHAR(20) NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE empleado(
 );
 
 CREATE TABLE cargo(
-    DNI_empleado CHAR(9) PRIMARY KEY,
+    dni_empleado CHAR(9) PRIMARY KEY,
     cargo VARCHAR(20) NOT NULL,
     FOREIGN KEY (DNI_empleado) REFERENCES empleado(DNI)
     ON DELETE CASCADE
@@ -27,8 +27,9 @@ CREATE TABLE cargo(
 );
 
 CREATE TABLE turno(
-    empleado CHAR(9) PRIMARY KEY,
+    empleado CHAR(9),
     dia DATE NOT NULL,
+    PRIMARY KEY (empleado, dia), -- modificado para que un empleado pueda tener múltiples turnos
     hora_entrada TIME NOT NULL,
     hora_salida TIME NOT NULL,
     FOREIGN KEY (empleado) REFERENCES empleado(DNI)
@@ -47,6 +48,7 @@ CREATE TABLE material_prestamo(
     productora VARCHAR(20),
     isbn VARCHAR(13),
     creador VARCHAR(9),
+    disponible BOOLEAN GENERATED ALWAYS AS (socio_prestamo IS NULL) STORED, -- nuevo atributo: 'disponible' si el material está disponible o no
     FOREIGN KEY (socio_prestamo) REFERENCES socio(idsocio)
     ON DELETE NO ACTION
     ON UPDATE CASCADE,
