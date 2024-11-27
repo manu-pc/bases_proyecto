@@ -39,16 +39,18 @@ CREATE TABLE turno(
 
 CREATE TABLE material_prestamo(
     id VARCHAR(9) PRIMARY KEY,
+    tipo VARCHAR(10) NOT NULL, --libro o cd
+    titulo VARCHAR(20) NOT NULL,
+    fecha_publicacion DATE NOT NULL,
+    creador VARCHAR(9) NOT NULL,
+    productora VARCHAR(20) NOT NULL,
+    isbn VARCHAR(13) NOT NULL,
+
     socio_prestamo VARCHAR(9),
     empleado_prestamo CHAR(9), --segun el modelo relacional pueden ser nulos 
     fecha_prestamo DATE, 
-    tipo VARCHAR(10) NOT NULL, --libro o cd
-    titulo VARCHAR(20) NOT NULL,
-    fecha_publicacion DATE,
-    productora VARCHAR(20),
-    isbn VARCHAR(13),
-    creador VARCHAR(9),
     disponible BOOLEAN GENERATED ALWAYS AS (socio_prestamo IS NULL) STORED, -- nuevo atributo: 'disponible' si el material está disponible o no
+    
     FOREIGN KEY (socio_prestamo) REFERENCES socio(idsocio)
     ON DELETE NO ACTION
     ON UPDATE CASCADE,
@@ -59,7 +61,7 @@ CREATE TABLE material_prestamo(
     ON DELETE NO ACTION
     ON UPDATE CASCADE
     CHECK (tipo IN ('libro', 'CD'))
-); --lo de que solo se puede reservar un libro o un cd ns como hacerlo
+); 
 
 CREATE TABLE creador(
     idcreador VARCHAR(9) PRIMARY KEY,
@@ -71,9 +73,9 @@ CREATE TABLE creador(
 );
 
 CREATE TABLE pertenecer_estilo(
-    id_creador VARCHAR(9),
+    material VARCHAR(9),
     estilo VARCHAR(20) NOT NULL,
-    FOREIGN KEY (id_creador) REFERENCES creador(idcreador)
+    FOREIGN KEY (material) REFERENCES material_prestamo(material_prestamo)
     ON DELETE CASCADE
     ON UPDATE CASCADE
     PRIMARY KEY (id_creador, estilo)
@@ -103,7 +105,7 @@ CREATE TABLE ordenador(
     modelo VARCHAR(20),
     usuario  VARCHAR(9),
     fecha_prestamo DATE,
-    empleado_prestamo CHAR(9),
+    empleado_prestamo CHAR(9), 
     FOREIGN KEY (usuario) REFERENCES socio(idsocio)
     ON DELETE NO ACTION
     ON UPDATE CASCADE

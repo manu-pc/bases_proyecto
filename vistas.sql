@@ -1,9 +1,10 @@
 -- Crea unha vista que amose os préstamos actuais.
 -- Inclúe o id do material, o título do material, o tipo do material, o id do socio, o nome do socio, o dni do empregado, o nome do empregado e a data do préstamo.
+-- (Combina datos dos socios e tamén dos materiais)
 CREATE VIEW vista_prestamos_actuales AS
 SELECT 
     mp.id AS id_material,
-    mp.titulo AS titulo_material,
+    mp.titulo AS titpueulo_material,
     mp.tipo AS tipo_material,
     s.id_socio AS id_socio,
     s.nombre AS nombre_socio,
@@ -57,25 +58,6 @@ WHERE
     -- só inclúe os empregados con cargo de bibliotecario
 
 
--- Crea unha vista que amose os socios que teñan prestamos pendentes
--- Inclúe o id do socio, o nombre do socio, os apelidos do socio, a direccion do socio, o telefono do socio, o id do material de prestamo, a fecha do prestamo e o dni do empregado.
-CREATE VIEW vista_socios_pendentes AS
-SELECT
-    s.id AS id_socio,
-    s.nombre AS nombre_socio,
-    s.apellido1 AS apellido1_socio,
-    s.apellido2 AS apellido2_socio,
-    s.direccion AS direccion_socio,
-    s.telefono AS telefono_socio,
-    mp.id AS id_material,
-    mp.fecha_prestamo AS fecha_prestamo,
-    mp.empleado_prestamo AS dni_empleado,
-FROM 
-    material_prestamo mp , socio s
-WHERE
-    s.id = mp.socio_prestamo
-    --Só inclúe os socios con prestamos sen devolver(materiais actualmente en prestamo)
-
 -- Crea unha vista que amose os ordenadores que non esten en uso
 -- Inclúe o id do ordenador, SO do ordenador e o modelo do ordenador
 CREATE VIEW ordenadores_dispoñibles AS
@@ -107,18 +89,3 @@ WHERE
     FROM
         material_prestamo mp)
     -- Só inclúe creadores que teñan algun material creado por eles na biblioteca
-
--- Crea unha vista que amose os prestamos previos que teñan socios que xa non pertencen a base de datos
--- Inclúe o id do material, o título do material, o tipo do material, a fecha do prestamo e a fecha de devolución
-CREATE VIEW vista_prestamos_actuales AS
-SELECT 
-    mp.id AS id_material,
-    mp.titulo AS titulo_material,
-    mp.tipo AS tipo_material,
-    pp.fecha_prestamo AS fecha_prestamo,
-    pp.fecha_devolucion AS feccha_devolución,
-FROM 
-    material_prestamo mp, prestamo_previo pp
-WHERE
-    pp.socio_prestamo IS NULL
-    --Só inclue os prestamos onde o socio é nulo,o que implica que o socio foi eliminado da base de datos
