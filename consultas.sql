@@ -1,6 +1,18 @@
 -- seleccionar todos los socios
 SELECT * FROM socio;
 
+-- seleccionar todos los creadores
+SELECT * FROM creador;
+
+-- seleccionar todo el material
+SELECT * FROM material_prestamo;
+
+-- ver todos los prestamos previos
+SELECT * FROM prestamo_previo;
+
+-- seleccionar todos los ordenadores
+SELECT * FROM ordenador;
+
 -- Obtener todos los libros en préstamo
 SELECT * FROM material_prestamo WHERE tipo = 'libro' AND socio_prestamo IS NOT NULL;
 
@@ -15,6 +27,7 @@ SELECT * FROM uso_previo WHERE id_ordenador = '987654321';
 
 -- seleccionar todos los creadores de nacionalidad estadounidense
 SELECT * FROM creador WHERE nacionalidad = 'EEUU';
+
 
 -- Obtener todos los materiales prestados por un empleado específico
 SELECT * FROM material_prestamo WHERE empleado_prestamo = '99999999X';

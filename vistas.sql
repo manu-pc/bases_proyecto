@@ -3,7 +3,7 @@
 -- (Combina datos dos socios e tamén dos materiais)
 CREATE VIEW vista_prestamos_actuales AS
 SELECT 
-    mp.id AS id_material,
+    mp.id_material AS id_material,
     mp.titulo AS titpueulo_material,
     mp.tipo AS tipo_material,
     s.id_socio AS id_socio,
@@ -29,7 +29,7 @@ WHERE
 -- Inclúe o id do material, o título do material, o tipo do material, o nome do creador e a data de publicación.
 CREATE VIEW vista_materiales_disponibles AS
 SELECT 
-    mp.id AS id_material,
+    mp.id_material AS id_material,
     mp.titulo AS titulo_material,
     mp.tipo AS tipo_material,
     c.nombre AS nombre_creador,
@@ -37,9 +37,9 @@ SELECT
 FROM
     material_prestamo mp
 JOIN    
-    creador c ON mp.creador = c.idcreador
+    creador c ON mp.creador = c.id_creador
 WHERE 
-    mp.disponible = TRUE;
+    mp.fecha_prestamo = NULL;
     -- só inclúe os materiais dispoñibles
 
 -- Crea unha vista que amose os empregados con cargo de bibliotecario.
@@ -62,9 +62,9 @@ WHERE
 -- Inclúe o id do ordenador, SO do ordenador e o modelo do ordenador
 CREATE VIEW ordenadores_dispoñibles AS
 SELECT
-    o.ID_ordenador AS ID,
+    o.id_ordenador AS ID,
     o.SO AS Sistema_Operativo,
-    o.modelo AS modelo,
+    o.modelo AS modelo
 FROM
     ordenador o
 WHERE
@@ -75,17 +75,17 @@ WHERE
 -- Inclúe o id do creador, o nombre e os apelidos do creador e a nacionalidade
 CREATE VIEW Autores_dispoñibles AS
 SELECT
-    c.idcreador AS id_Autor,
+    c.id_creador AS id_Autor,
     c.nombre AS nombre_Autor,
     c.apellido1 AS apellido1_Autor,
     c.apellido2 AS apellido2_Autor,
-    c.nacionalidad AS nacinalidad_Autor, 
+    c.nacionalidad AS nacinalidad_Autor 
 FROM
     creador c
 WHERE
-    c.idcreador in 
+    c.id_creador in 
     (SELECT
-        mp.idcreador 
+        mp.id_creador 
     FROM
         material_prestamo mp)
     -- Só inclúe creadores que teñan algun material creado por eles na biblioteca
