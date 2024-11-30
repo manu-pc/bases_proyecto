@@ -17,7 +17,7 @@ SELECT * FROM material_prestamo WHERE tipo = 'libro' AND socio_prestamo IS NOT N
 SELECT * FROM turno WHERE empleado = '00000000Y';
 
 -- Obtener todos los préstamos previos de un socio específico
-SELECT * FROM prestamo_previo WHERE socio_prestamo = 1;
+SELECT * FROM prestamo_previo WHERE socio_prestamo = 3;
 
 -- seleccionar todos los usos previos de un ordenador específico
 SELECT * FROM uso_previo WHERE id_ordenador = 3000000;
