@@ -69,16 +69,7 @@ CREATE TABLE material_prestamo (
     FOREIGN KEY (creador) REFERENCES creador(idcreador)
     ON DELETE NO ACTION
     ON UPDATE CASCADE,
-    CHECK (tipo IN ('libro', 'CD')),
-);
-
-CREATE TABLE pertenecer_estilo (
-    creador VARCHAR(9),
-    estilo VARCHAR(20) NOT NULL,
-    FOREIGN KEY (creador) REFERENCES creador(idcreador)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-    PRIMARY KEY (creador, estilo)
+    CHECK (tipo IN ('libro', 'CD'))
 );
 
 CREATE TABLE prestamo_previo (
