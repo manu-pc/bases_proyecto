@@ -38,3 +38,73 @@ COMMIT;
 
 -- Si, tras esto, realizasemos una consulta a la tabla 'prestamo_previo', deberíamos ver una nueva entrada con los datos del préstamo y devolución de Crimen y castigo.
 -- La fecha de devolución (y préstamo) debería ser la fecha actual (cuando se ejecute la transacción), y el socio y empleado deberían ser María y Juan, respectivamente.
+
+--transacción 2 (llegada de nuevos ordenadores y uso de uno de ellos por un nuevo socio)
+begin;
+
+do $$
+
+declare
+	v_socio_id integer;
+	v_empleado_id char(9) := '99999999X'; --helena
+	v_ordenador_id integer;
+begin
+
+insert into socio values (default, 'Pablo', 'Rodríguez', 'Pérez', '2001-04-12', 'Ciudad, Calle nº15', '678969493')
+returning id_socio into v_socio_id;
+
+insert into ordenador (id_ordenador, so, modelo)
+values 
+	(default, 'Pop OS', 'MSI'),
+	(default, 'Pop OS', 'MSI'),
+	(default, 'Windows 11', 'Asus'),
+	(default, 'macOS', 'Apple');
+
+-- ordenador estrenado por pablo
+
+insert into ordenador values (default, 'macOS', 'Apple', v_socio_id, '2024-11-29', v_empleado_id)
+returning id_ordenador into v_ordenador_id;
+
+
+-- acaba de usar el ordenador
+update ordenador 
+set usuario = null, fecha_prestamo = null, empleado_prestamo = null
+where id_ordenador = v_ordenador_id;
+
+
+
+end $$;
+
+commit;
+
+--transacción 3
+
+begin;
+
+do $$
+
+declare
+	v_empleado_id char(9);
+begin
+
+-- nuevo empleado bibliotecario
+insert into empleado values ('44445555X', 'Carla', 'Sánchez', 'López', '1999-04-23', '2024-11-30', 1200);
+
+insert into cargo values ('44445555X', 'bibliotecario');
+
+
+-- ascienden a helena
+update cargo
+set cargo = 'gerente'
+where dni_empleado = '99999999X';
+
+-- realizan un prestamo
+update material_prestamo 
+set socio_prestamo = 1, empleado_prestamo = '44445555X', fecha_prestamo = '2024-11-30'
+where id_material = 2000000;
+-- turno de Carla
+insert into turno values ('44445555X', '2024-11-30', '08:00:00', '14:00:00');
+
+end $$;
+
+commit;
