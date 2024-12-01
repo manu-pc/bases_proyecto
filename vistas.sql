@@ -39,7 +39,7 @@ FROM
 JOIN    
     creador c ON mp.creador = c.id_creador
 WHERE 
-    mp.fecha_prestamo = NULL;
+    mp.fecha_prestamo IS NULL;
     -- só inclúe os materiais dispoñibles
 
 -- Crea unha vista que amose os empregados con cargo de bibliotecario.
@@ -68,7 +68,7 @@ SELECT
 FROM
     ordenador o
 WHERE
-    o.usuario IS NULL
+    o.usuario IS NULL;
     --Só se inclúe os ordenadores que non teñen usuarios
 
 -- Crea unha vista que amose os creadores que crearan algun material de prestamo da biblioteca
@@ -85,7 +85,7 @@ FROM
 WHERE
     c.id_creador in 
     (SELECT
-        mp.id_creador 
+        mp.creador
     FROM
         material_prestamo mp)
     -- Só inclúe creadores que teñan algun material creado por eles na biblioteca
