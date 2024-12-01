@@ -24,7 +24,6 @@ CREATE TABLE socio (
     telefono VARCHAR(12) NOT NULL
 );
 
-
 CREATE TABLE empleado (
     dni char(9) PRIMARY KEY,
     nombre VARCHAR(20) NOT NULL,
@@ -34,11 +33,13 @@ CREATE TABLE empleado (
     fecha_inicio_contrato DATE NOT NULL,
     salario FLOAT NOT NULL
 );
+
 CREATE TABLE cargo (
     dni_empleado char(9) PRIMARY KEY,
     cargo VARCHAR(20) NOT NULL,
     FOREIGN KEY (dni_empleado) REFERENCES empleado(dni) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
 CREATE TABLE turno (
     empleado char(9),
     dia DATE NOT NULL,
@@ -48,6 +49,7 @@ CREATE TABLE turno (
     hora_salida TIME NOT NULL,
     FOREIGN KEY (empleado) REFERENCES empleado(dni) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
 CREATE SEQUENCE creador_seq START 1000000;
 CREATE TABLE creador (
     id_creador INT PRIMARY KEY DEFAULT NEXTVAL('creador_seq'),
@@ -57,7 +59,9 @@ CREATE TABLE creador (
     fecha_nacimiento DATE,
     nacionalidad VARCHAR(20)
 );
+
 CREATE SEQUENCE material_seq START 2000000;
+
 CREATE TABLE material_prestamo (
     id_material INT PRIMARY KEY DEFAULT NEXTVAL('material_seq'),
     tipo VARCHAR(5) NOT NULL,
@@ -79,6 +83,7 @@ CREATE TABLE material_prestamo (
         FOREIGN KEY (creador) REFERENCES creador(id_creador) ON DELETE NO ACTION ON UPDATE CASCADE,
         CHECK (tipo IN ('libro', 'CD'))
 );
+
 CREATE TABLE prestamo_previo (
     fecha_prestamo DATE,
     fecha_devolucion DATE,
@@ -97,6 +102,7 @@ CREATE TABLE prestamo_previo (
             material
         )
 );
+
 CREATE SEQUENCE ordenador_seq START 3000000;
 CREATE TABLE ordenador (
     id_ordenador INT PRIMARY KEY DEFAULT NEXTVAL('ordenador_seq'),
@@ -109,6 +115,7 @@ CREATE TABLE ordenador (
     FOREIGN KEY (empleado_prestamo) REFERENCES empleado(dni) ON DELETE
     SET NULL ON UPDATE CASCADE
 );
+
 CREATE TABLE uso_previo (
     fecha_prestamo DATE,
     id_ordenador INT,

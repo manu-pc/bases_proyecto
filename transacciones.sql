@@ -81,12 +81,6 @@ commit;
 
 begin;
 
-do $$
-
-declare
-	v_empleado_id char(9);
-begin
-
 -- nuevo empleado bibliotecario
 insert into empleado values ('44445555X', 'Carla', 'Sánchez', 'López', '1999-04-23', '2024-11-30', 1200);
 
@@ -105,6 +99,51 @@ where id_material = 2000000;
 -- turno de Carla
 insert into turno values ('44445555X', '2024-11-30', '08:00:00', '14:00:00');
 
-end $$;
-
 commit;
+
+-- transaccion 4
+
+begin;
+do $$
+    declare
+        nuevo_socio integer;
+        nuevo_libro_2 integer;
+        nuevo_libro_1 integer;
+        creador_1 integer;
+        creador_2 integer;
+    begin
+        insert into creador
+        values (default, 'Eric', 'Arthur', 'Blair', '1903-06-13', 'India Britanica')
+        returning id_creador into creador_1;
+        insert into creador
+        values (default, 'Patrick', 'James', 'Rothfuss', '1973-08-13', 'Estadounidense')
+        returning id_creador into creador_2;
+        insert into material_prestamo
+        values (default, 'libro', '1984', 'distopia', '2011-10-14', creador_1, 'Secker & Warburg', '9780451524935', null, null, null)
+        returning id_material into nuevo_libro_1;
+        insert into material_prestamo
+        values (default, 'libro', 'El nombre del viento', 'fantasia', '2009-04-27', creador_2, 'Plaza & Janés', '9788498385542', null, null, null)
+        returning id_material into nuevo_libro_2;
+
+        insert into socio values (default, 'María', 'Fernández', 'Souto', '2004-04-02', 'Ciudad, Calle nº2', '682346273')
+        returning id_socio into nuevo_socio;
+
+        update material_prestamo
+            set socio_prestamo = nuevo_socio, empleado_prestamo = '44445555X', fecha_prestamo = '2024-12-04'
+            where id_material = nuevo_libro_2;
+
+        insert into turno values ('44445555X', '2024-12-04', '08:00:00', '14:00:00');
+
+        update material_prestamo
+            set socio_prestamo = null, empleado_prestamo = null, fecha_prestamo = null
+            where id_material = nuevo_libro_2;
+
+        update material_prestamo
+            set socio_prestamo = nuevo_socio, empleado_prestamo = '00000000Y', fecha_prestamo = '2024-12-04'
+            where id_material = nuevo_libro_1;
+
+        insert into turno values ('00000000Y', '2024-12-04', '16:00:00', '21:00:00');
+
+end $$;
+commit;
+
