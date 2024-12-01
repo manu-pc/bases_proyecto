@@ -147,3 +147,68 @@ do $$
 end $$;
 commit;
 
+-- Transacción 5
+BEGIN;
+
+DO $$
+DECLARE
+    nuevo_socio_id INTEGER;
+    nuevo_creador_id INTEGER;
+    nuevo_cd_id INTEGER;
+    nuevo_libro1_id INTEGER;
+    nuevo_libro2_id INTEGER;
+    nuevo_ordenador_id INTEGER;
+    empleado_id CHAR(9) := '44445555X'; -- ID de Carla
+BEGIN
+
+-- Se añade un nuevo socio a la base de datos
+INSERT INTO socio (nombre, apellido1, apellido2, fecha_nacimiento, direccion, telefono)
+VALUES ('Carlos', 'Martínez', 'Gómez', '1985-07-20', 'Ciudad, Calle nº20', '623456789')
+RETURNING id_socio INTO nuevo_socio_id;
+
+-- Se añade un nuevo creador a la base de datos
+INSERT INTO creador (nombre, apellido1, apellido2, fecha_nacimiento, nacionalidad)
+VALUES ('Ludwig', 'van', 'Beethoven', '1770-12-17', 'Alemania')
+RETURNING id_creador INTO nuevo_creador_id;
+
+-- Se añade un nuevo CD a la base de datos
+INSERT INTO material_prestamo (tipo, titulo, genero, fecha_publicacion, creador, productora, isbn, socio_prestamo, empleado_prestamo, fecha_prestamo)
+VALUES ('CD', 'Sinfonía No. 9', 'Clásica', '1824-05-07', nuevo_creador_id, 'Deutsche Grammophon', NULL, nuevo_socio_id, empleado_id, CURRENT_DATE)
+RETURNING id_material INTO nuevo_cd_id;
+
+-- El socio devuelve el CD
+UPDATE material_prestamo
+SET socio_prestamo = NULL, empleado_prestamo = NULL, fecha_prestamo = NULL
+WHERE id_material = nuevo_cd_id;
+
+-- Se añaden dos nuevos libros a la base de datos
+INSERT INTO creador (nombre, apellido1, apellido2, fecha_nacimiento, nacionalidad)
+VALUES ('George', 'Orwell', NULL, '1903-06-25', 'Reino Unido')
+RETURNING id_creador INTO nuevo_creador_id;
+
+INSERT INTO material_prestamo (tipo, titulo, genero, fecha_publicacion, creador, productora, isbn, socio_prestamo, empleado_prestamo, fecha_prestamo)
+VALUES ('libro', '1984', 'Distopía', '1949-06-08', nuevo_creador_id, 'Secker & Warburg', '9780451524935', NULL, NULL, NULL)
+RETURNING id_material INTO nuevo_libro1_id;
+
+INSERT INTO material_prestamo (tipo, titulo, genero, fecha_publicacion, creador, productora, isbn, socio_prestamo, empleado_prestamo, fecha_prestamo)
+VALUES ('libro', 'Rebelión granja', 'Satira', '1945-08-17', nuevo_creador_id, 'Secker & Warburg', '9780451526342', NULL, NULL, NULL)
+RETURNING id_material INTO nuevo_libro2_id;
+
+-- El socio toma prestado uno de los nuevos libros
+UPDATE material_prestamo
+SET socio_prestamo = nuevo_socio_id, empleado_prestamo = empleado_id, fecha_prestamo = CURRENT_DATE
+WHERE id_material = nuevo_libro1_id;
+
+-- Se añade un nuevo ordenador a la base de datos
+INSERT INTO ordenador (so, modelo)
+VALUES ('Windows 10', 'Dell')
+RETURNING id_ordenador INTO nuevo_ordenador_id;
+
+-- El socio empieza a usar el ordenador
+UPDATE ordenador
+SET usuario = nuevo_socio_id, fecha_prestamo = CURRENT_DATE, empleado_prestamo = empleado_id
+WHERE id_ordenador = nuevo_ordenador_id;
+
+END $$;
+
+COMMIT;
