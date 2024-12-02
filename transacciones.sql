@@ -62,7 +62,7 @@ values
 
 -- ordenador estrenado por pablo
 
-insert into ordenador values (default, 'macOS', 'Apple', v_socio_id, '2024-11-29', v_empleado_id)
+insert into ordenador (so, modelo, usuario, fecha_prestamo, empleado_prestamo) values ('macOS', 'Apple', v_socio_id, '2024-11-29', v_empleado_id)
 returning id_ordenador into v_ordenador_id;
 
 
@@ -95,7 +95,7 @@ where dni_empleado = '99999999X';
 -- realizan un prestamo
 update material_prestamo 
 set socio_prestamo = 1, empleado_prestamo = '44445555X', fecha_prestamo = '2024-11-30'
-where id_material = 2000000;
+where id_material = 2000005;
 -- turno de Carla
 insert into turno values ('44445555X', '2024-11-30', '08:00:00', '14:00:00');
 
@@ -191,7 +191,7 @@ VALUES ('libro', '1984', 'Distopía', '1949-06-08', nuevo_creador_id, 'Secker & 
 RETURNING id_material INTO nuevo_libro1_id;
 
 INSERT INTO material_prestamo (tipo, titulo, genero, fecha_publicacion, creador, productora, isbn, socio_prestamo, empleado_prestamo, fecha_prestamo)
-VALUES ('libro', 'Rebelión granja', 'Satira', '1945-08-17', nuevo_creador_id, 'Secker & Warburg', '9780451526342', NULL, NULL, NULL)
+VALUES ('libro', 'Rebelión en la granja', 'Satira', '1945-08-17', nuevo_creador_id, 'Secker & Warburg', '9780451526342', NULL, NULL, NULL)
 RETURNING id_material INTO nuevo_libro2_id;
 
 -- El socio toma prestado uno de los nuevos libros
