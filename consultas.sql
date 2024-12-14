@@ -26,7 +26,8 @@ SELECT titulo,
     creador,
     productora,
     isbn
-FROM material_prestamo;
+FROM material_prestamo
+ORDER BY id_material;
 
 -- seleccionar todos los ordenadores
 SELECT id_ordenador,
@@ -65,7 +66,8 @@ WHERE socio_prestamo = 3;
 -- seleccionar todos los usos previos de un ordenador específico
 SELECT id_ordenador,
     fecha_prestamo,
-    fecha_devolucion
+    fecha_devolucion,
+    usuario
 FROM uso_previo
 WHERE id_ordenador = 3000000;
 

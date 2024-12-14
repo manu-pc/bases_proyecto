@@ -1,12 +1,10 @@
--- Drop all functions and triggers
--- Drop triggers
+
 DROP TRIGGER IF EXISTS trigger_limite_prestamos ON material_prestamo;
 
 DROP TRIGGER IF EXISTS trigger_prestamo_previo ON material_prestamo;
 
 DROP TRIGGER IF EXISTS trigger_uso_previo ON ordenador;
 
--- Drop functions
 DROP FUNCTION IF EXISTS limite_prestamos() CASCADE;
 
 DROP FUNCTION IF EXISTS actualizar_prestamo_previo() CASCADE;
@@ -91,8 +89,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trigger_prestamo_previo
-AFTER
-UPDATE OF socio_prestamo,
+AFTER UPDATE OF socio_prestamo,
     empleado_prestamo ON material_prestamo FOR EACH ROW
     WHEN (
         OLD.socio_prestamo IS NOT NULL
