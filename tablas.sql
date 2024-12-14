@@ -19,8 +19,6 @@ DROP TABLE IF EXISTS socio CASCADE;
 
 DROP TABLE IF EXISTS pertenecer_estilo CASCADE;
 
-
-
 DROP SEQUENCE IF EXISTS ordenador_seq CASCADE;
 
 DROP SEQUENCE IF EXISTS material_seq CASCADE;
@@ -97,6 +95,7 @@ CREATE TABLE material_prestamo (
     -- 'libro' o 'cd'
     titulo VARCHAR(40) NOT NULL,
     genero VARCHAR(20) NOT NULL,
+    -- 'Novela', 'Ensayo'... En caso de música, 'Clásica', 'Rock'...
     fecha_publicacion DATE NOT NULL,
     creador INT NOT NULL,
     productora VARCHAR(20) NOT NULL,
@@ -108,7 +107,8 @@ CREATE TABLE material_prestamo (
     fecha_prestamo DATE,
     FOREIGN KEY (socio_prestamo) REFERENCES socio (id_socio) ON DELETE NO ACTION ON UPDATE CASCADE,
     FOREIGN KEY (empleado_prestamo) REFERENCES empleado (dni) ON DELETE
-    SET NULL ON UPDATE CASCADE,
+    SET
+        NULL ON UPDATE CASCADE,
         FOREIGN KEY (creador) REFERENCES creador (id_creador) ON DELETE NO ACTION ON UPDATE CASCADE,
         CHECK (tipo IN ('libro', 'CD'))
 );
@@ -120,9 +120,11 @@ CREATE TABLE prestamo_previo (
     fecha_prestamo DATE,
     fecha_devolucion DATE,
     FOREIGN KEY (socio_prestamo) REFERENCES socio (id_socio) ON DELETE
-    SET NULL ON UPDATE CASCADE,
+    SET
+        NULL ON UPDATE CASCADE,
         FOREIGN KEY (empleado_prestamo) REFERENCES empleado (dni) ON DELETE
-    SET NULL ON UPDATE CASCADE,
+    SET
+        NULL ON UPDATE CASCADE,
         FOREIGN KEY (material) REFERENCES material_prestamo (id_material) ON DELETE CASCADE ON UPDATE CASCADE,
         PRIMARY KEY (
             fecha_prestamo,
@@ -143,7 +145,8 @@ CREATE TABLE ordenador (
     fecha_prestamo DATE,
     FOREIGN KEY (usuario) REFERENCES socio (id_socio) ON DELETE NO ACTION ON UPDATE CASCADE,
     FOREIGN KEY (empleado_prestamo) REFERENCES empleado (dni) ON DELETE
-    SET NULL ON UPDATE CASCADE
+    SET
+        NULL ON UPDATE CASCADE
 );
 
 CREATE TABLE uso_previo (
@@ -153,9 +156,11 @@ CREATE TABLE uso_previo (
     fecha_prestamo DATE,
     fecha_devolucion DATE,
     FOREIGN KEY (usuario) REFERENCES socio (id_socio) ON DELETE
-    SET NULL ON UPDATE CASCADE,
+    SET
+        NULL ON UPDATE CASCADE,
         FOREIGN KEY (empleado_prestamo) REFERENCES empleado (dni) ON DELETE
-    SET NULL ON UPDATE CASCADE,
+    SET
+        NULL ON UPDATE CASCADE,
         FOREIGN KEY (id_ordenador) REFERENCES ordenador (id_ordenador) ON DELETE CASCADE ON UPDATE CASCADE,
         PRIMARY KEY (
             fecha_prestamo,

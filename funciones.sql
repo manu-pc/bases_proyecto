@@ -1,4 +1,3 @@
-
 DROP TRIGGER IF EXISTS trigger_limite_prestamos ON material_prestamo;
 
 DROP TRIGGER IF EXISTS trigger_prestamo_previo ON material_prestamo;
@@ -14,14 +13,18 @@ DROP FUNCTION IF EXISTS actualizar_uso_previo() CASCADE;
 -- El límite de 'cada socio sólo puede tomar prestado un libro o un CD a la vez' se implementa con un trigger y una función
 -- Debido a la implementación de 'CDs' y 'libros' como tipos de una misma relación material_prestamo, se necesita un trigger para
 -- asegurarse de que un socio no puede tomar prestado más de un libro o CD a la vez.
-CREATE OR REPLACE FUNCTION limite_prestamos() RETURNS TRIGGER AS $$ BEGIN IF (NEW.tipo = 'libro') THEN -- si el material a prestar es un libro
-    IF (
-        SELECT COUNT(*)
-        FROM material_prestamo
-        WHERE socio_prestamo = NEW.socio_prestamo
-            AND tipo = 'libro'
-    ) >= 1 THEN -- si el socio ya tiene un libro prestado
-    RAISE EXCEPTION 'Este socio ya tiene prestado un libro. Debe devolverlo antes de tomar este.';
+CREATE
+OR REPLACE FUNCTION limite_prestamos() RETURNS TRIGGER AS $$ BEGIN IF (NEW.tipo = 'libro') THEN -- si el material a prestar es un libro
+IF (
+    SELECT
+        COUNT(*)
+    FROM
+        material_prestamo
+    WHERE
+        socio_prestamo = NEW.socio_prestamo
+        AND tipo = 'libro'
+) >= 1 THEN -- si el socio ya tiene un libro prestado
+RAISE EXCEPTION 'Este socio ya tiene prestado un libro. Debe devolverlo antes de tomar este.';
 
 END IF;
 
@@ -29,9 +32,12 @@ END IF;
 
 IF (NEW.tipo = 'CD') THEN -- si el material a prestar es un CD
 IF (
-    SELECT COUNT(*)
-    FROM material_prestamo
-    WHERE socio_prestamo = NEW.socio_prestamo
+    SELECT
+        COUNT(*)
+    FROM
+        material_prestamo
+    WHERE
+        socio_prestamo = NEW.socio_prestamo
         AND tipo = 'CD'
 ) >= 1 THEN -- si el socio ya tiene un CD prestado
 RAISE EXCEPTION 'Este socio ya tiene prestado un CD. Debe devolverlo antes de tomar este.';
@@ -53,7 +59,8 @@ $$ LANGUAGE plpgsql;
 -- está siendo prestado), se comprueba si el socio ya tiene un libro o CD
 -- prestado. Si es así, se lanza una excepción.
 CREATE TRIGGER trigger_limite_prestamos BEFORE
-UPDATE ON material_prestamo FOR EACH ROW
+UPDATE
+    ON material_prestamo FOR EACH ROW
     WHEN (
         NEW.fecha_prestamo IS NOT NULL
         AND OLD.fecha_prestamo IS NULL
@@ -64,15 +71,18 @@ UPDATE ON material_prestamo FOR EACH ROW
 -- facilitar el manejo de datos. Esto se puede implementar con dos funciones
 -- y dos triggers, activados cuando los campos correspondientes pasan a NULL.
 -- Función que actualiza la tabla 'prestamo_previo' cuando se cancela un préstamo
-CREATE OR REPLACE FUNCTION actualizar_prestamo_previo() RETURNS TRIGGER AS $$ BEGIN -- Inserta en `prestamo_previo` antes de modificar el registro
-INSERT INTO prestamo_previo (
+CREATE
+OR REPLACE FUNCTION actualizar_prestamo_previo() RETURNS TRIGGER AS $$ BEGIN -- Inserta en `prestamo_previo` antes de modificar el registro
+INSERT INTO
+    prestamo_previo (
         fecha_prestamo,
         fecha_devolucion,
         socio_prestamo,
         empleado_prestamo,
         material
     )
-VALUES (
+VALUES
+    (
         OLD.fecha_prestamo,
         -- Fecha original del préstamo
         CURRENT_DATE,
@@ -89,7 +99,9 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trigger_prestamo_previo
-AFTER UPDATE OF socio_prestamo,
+AFTER
+UPDATE
+    OF socio_prestamo,
     empleado_prestamo ON material_prestamo FOR EACH ROW
     WHEN (
         OLD.socio_prestamo IS NOT NULL
@@ -98,15 +110,18 @@ AFTER UPDATE OF socio_prestamo,
     EXECUTE FUNCTION actualizar_prestamo_previo();
 
 -- lo mismo, para uso de ordenadores:
-CREATE OR REPLACE FUNCTION actualizar_uso_previo() RETURNS TRIGGER AS $$ BEGIN -- Inserta en `uso_previo` antes de modificar el registro
-INSERT INTO uso_previo (
+CREATE
+OR REPLACE FUNCTION actualizar_uso_previo() RETURNS TRIGGER AS $$ BEGIN -- Inserta en `uso_previo` antes de modificar el registro
+INSERT INTO
+    uso_previo (
         fecha_prestamo,
         fecha_devolucion,
         usuario,
         empleado_prestamo,
         id_ordenador
     )
-VALUES (
+VALUES
+    (
         OLD.fecha_prestamo,
         -- Fecha original del préstamo
         CURRENT_DATE,
@@ -125,7 +140,8 @@ $$ LANGUAGE plpgsql;
 -- con el trigger:
 CREATE TRIGGER trigger_uso_previo
 AFTER
-UPDATE OF usuario,
+UPDATE
+    OF usuario,
     empleado_prestamo ON ordenador FOR EACH ROW
     WHEN (
         OLD.usuario IS NOT NULL

@@ -2,8 +2,10 @@ BEGIN;
 
 -- inserciones de datos para poder debuggear las consultas posteriormente
 -- tres socios
-INSERT INTO socio
-VALUES (
+INSERT INTO
+    socio
+VALUES
+    (
         DEFAULT,
         'Alberto',
         'Rey',
@@ -13,8 +15,10 @@ VALUES (
         '123456789'
     );
 
-INSERT INTO socio
-VALUES (
+INSERT INTO
+    socio
+VALUES
+    (
         DEFAULT,
         'José',
         'González',
@@ -24,8 +28,10 @@ VALUES (
         '999999999'
     );
 
-INSERT INTO socio
-VALUES (
+INSERT INTO
+    socio
+VALUES
+    (
         DEFAULT,
         'María',
         'Rodríguez',
@@ -36,8 +42,10 @@ VALUES (
     );
 
 -- dos empleados
-INSERT INTO empleado
-VALUES (
+INSERT INTO
+    empleado
+VALUES
+    (
         '99999999X',
         'Helena',
         'Martín',
@@ -47,8 +55,10 @@ VALUES (
         1200
     );
 
-INSERT INTO empleado
-VALUES (
+INSERT INTO
+    empleado
+VALUES
+    (
         '00000000Y',
         'Juan',
         'Díaz',
@@ -59,24 +69,52 @@ VALUES (
     );
 
 -- un cargo para cada empleado
-INSERT INTO cargo
-VALUES ('99999999X', 'gerente');
+INSERT INTO
+    cargo
+VALUES
+    ('99999999X', 'bibliotecario');
 
-INSERT INTO cargo
-VALUES ('00000000Y', 'bibliotecario');
+INSERT INTO
+    cargo
+VALUES
+    ('00000000Y', 'bibliotecario');
 
--- un turno previo de Juan
-INSERT INTO turno
-VALUES (
+-- un turno previo de Juan y otros de Helena
+INSERT INTO
+    turno
+VALUES
+    (
         '00000000Y',
         '2024-04-12',
         '08:00:00',
         '14:00:00'
     );
 
+
+INSERT INTO
+    turno
+VALUES
+    (
+        '99999999X',
+        '2024-04-12',
+        '14:00:00',
+        '20:00:00'
+    );
+
+    INSERT INTO
+        turno
+    VALUES
+        (
+            '99999999X',
+            '2024-04-13',
+            '08:00:00',
+            '14:00:00'
+        );
 -- tres creadores
-INSERT INTO creador
-VALUES (
+INSERT INTO
+    creador
+VALUES
+    (
         DEFAULT,
         'Francis',
         'Scott',
@@ -85,8 +123,10 @@ VALUES (
         'EEUU'
     );
 
-INSERT INTO creador
-VALUES (
+INSERT INTO
+    creador
+VALUES
+    (
         DEFAULT,
         'Vicente',
         'Risco',
@@ -95,8 +135,10 @@ VALUES (
         'España'
     );
 
-INSERT INTO creador
-VALUES (
+INSERT INTO
+    creador
+VALUES
+    (
         DEFAULT,
         'Michael',
         'Joseph',
@@ -106,8 +148,10 @@ VALUES (
     );
 
 -- dos libros: uno disponible y el otro en préstamo a José
-INSERT INTO material_prestamo
-VALUES (
+INSERT INTO
+    material_prestamo
+VALUES
+    (
         DEFAULT,
         'libro',
         'El gran Gatsby',
@@ -121,8 +165,10 @@ VALUES (
         NULL
     );
 
-INSERT INTO material_prestamo
-VALUES (
+INSERT INTO
+    material_prestamo
+VALUES
+    (
         DEFAULT,
         'libro',
         'O porco de pé',
@@ -137,8 +183,10 @@ VALUES (
     );
 
 -- un CD prestado a María
-INSERT INTO material_prestamo
-VALUES (
+INSERT INTO
+    material_prestamo
+VALUES
+    (
         DEFAULT,
         'CD',
         'Thriller',
@@ -153,11 +201,15 @@ VALUES (
     );
 
 -- un ordenador disponible, uno en préstamo a María y otro a Alberto
-INSERT INTO ordenador
-VALUES (DEFAULT, 'Linux Mint', 'Dell', NULL, NULL, NULL);
+INSERT INTO
+    ordenador
+VALUES
+    (DEFAULT, 'Linux Mint', 'Dell', NULL, NULL, NULL);
 
-INSERT INTO ordenador
-VALUES (
+INSERT INTO
+    ordenador
+VALUES
+    (
         DEFAULT,
         'Windows XP',
         'HP',
@@ -166,8 +218,10 @@ VALUES (
         '2023-10-01'
     );
 
-INSERT INTO ordenador
-VALUES (
+INSERT INTO
+    ordenador
+VALUES
+    (
         DEFAULT,
         'Windows 10',
         'HP',
@@ -177,8 +231,10 @@ VALUES (
     );
 
 -- algunos historiales de usos previos
-INSERT INTO prestamo_previo
-VALUES (
+INSERT INTO
+    prestamo_previo
+VALUES
+    (
         2000000,
         1,
         '99999999X',
@@ -186,8 +242,10 @@ VALUES (
         '2021-01-15'
     );
 
-INSERT INTO prestamo_previo
-VALUES (
+INSERT INTO
+    prestamo_previo
+VALUES
+    (
         2000001,
         2,
         '00000000Y',
@@ -195,8 +253,10 @@ VALUES (
         '2021-02-15'
     );
 
-INSERT INTO prestamo_previo
-VALUES (
+INSERT INTO
+    prestamo_previo
+VALUES
+    (
         2000002,
         3,
         '99999999X',
@@ -204,8 +264,10 @@ VALUES (
         '2021-03-15'
     );
 
-INSERT INTO uso_previo
-VALUES (
+INSERT INTO
+    uso_previo
+VALUES
+    (
         3000000,
         1,
         '99999999X',
@@ -213,8 +275,10 @@ VALUES (
         '2021-01-15'
     );
 
-INSERT INTO uso_previo
-VALUES (
+INSERT INTO
+    uso_previo
+VALUES
+    (
         3000001,
         2,
         '00000000Y',
@@ -223,8 +287,10 @@ VALUES (
     );
 
 -- más creadores
-INSERT INTO creador
-VALUES (
+INSERT INTO
+    creador
+VALUES
+    (
         DEFAULT,
         'Gabriel',
         'García',
@@ -233,8 +299,10 @@ VALUES (
         'Colombia'
     );
 
-INSERT INTO creador
-VALUES (
+INSERT INTO
+    creador
+VALUES
+    (
         DEFAULT,
         'Miguel',
         'de Cervantes',
@@ -243,8 +311,10 @@ VALUES (
         'España'
     );
 
-INSERT INTO creador
-VALUES (
+INSERT INTO
+    creador
+VALUES
+    (
         DEFAULT,
         'AC/DC',
         NULL,
@@ -253,8 +323,10 @@ VALUES (
         'Australia'
     );
 
-INSERT INTO creador
-VALUES (
+INSERT INTO
+    creador
+VALUES
+    (
         DEFAULT,
         'Pink',
         'Floyd',
@@ -264,8 +336,10 @@ VALUES (
     );
 
 -- más libros
-INSERT INTO material_prestamo
-VALUES (
+INSERT INTO
+    material_prestamo
+VALUES
+    (
         DEFAULT,
         'libro',
         'Cien años de soledad',
@@ -279,8 +353,10 @@ VALUES (
         NULL
     );
 
-INSERT INTO material_prestamo
-VALUES (
+INSERT INTO
+    material_prestamo
+VALUES
+    (
         DEFAULT,
         'libro',
         'Don Quijote de la Mancha',
@@ -294,22 +370,21 @@ VALUES (
         NULL
     );
 
--- nuevos préstamos: back in black a jose y cien años de soledad a alberto
-UPDATE material_prestamo
-SET socio_prestamo = 2,
-    empleado_prestamo = '00000000Y',
-    fecha_prestamo = '2023-01-01'
-WHERE titulo = 'Back in Black';
 
-UPDATE material_prestamo
-SET socio_prestamo = 1,
+UPDATE
+    material_prestamo
+SET
+    socio_prestamo = 1,
     empleado_prestamo = '00000000Y',
     fecha_prestamo = '2023-01-01'
-WHERE titulo = 'Cien años de soledad';
+WHERE
+    titulo = 'Cien años de soledad';
 
 -- más CDs
-INSERT INTO material_prestamo
-VALUES (
+INSERT INTO
+    material_prestamo
+VALUES
+    (
         DEFAULT,
         'CD',
         'Back in Black',
@@ -323,8 +398,10 @@ VALUES (
         NULL
     );
 
-INSERT INTO material_prestamo
-VALUES (
+INSERT INTO
+    material_prestamo
+VALUES
+    (
         DEFAULT,
         'CD',
         'The Dark Side of the Moon',
@@ -339,8 +416,10 @@ VALUES (
     );
 
 -- más historiales de préstamos previos
-INSERT INTO prestamo_previo
-VALUES (
+INSERT INTO
+    prestamo_previo
+VALUES
+    (
         2000003,
         1,
         '00000000Y',
@@ -348,8 +427,10 @@ VALUES (
         '2021-04-15'
     );
 
-INSERT INTO prestamo_previo
-VALUES (
+INSERT INTO
+    prestamo_previo
+VALUES
+    (
         2000004,
         3,
         '99999999X',
@@ -357,8 +438,10 @@ VALUES (
         '2021-05-15'
     );
 
-INSERT INTO prestamo_previo
-VALUES (
+INSERT INTO
+    prestamo_previo
+VALUES
+    (
         2000005,
         3,
         '00000000Y',
@@ -366,8 +449,10 @@ VALUES (
         '2021-06-15'
     );
 
-INSERT INTO prestamo_previo
-VALUES (
+INSERT INTO
+    prestamo_previo
+VALUES
+    (
         2000006,
         3,
         '00000000Y',
@@ -375,8 +460,10 @@ VALUES (
         '2021-07-15'
     );
 
-INSERT INTO prestamo_previo
-VALUES (
+INSERT INTO
+    prestamo_previo
+VALUES
+    (
         2000002,
         3,
         '99999999X',
@@ -384,8 +471,10 @@ VALUES (
         '2021-08-15'
     );
 
-INSERT INTO prestamo_previo
-VALUES (
+INSERT INTO
+    prestamo_previo
+VALUES
+    (
         2000002,
         2,
         '00000000Y',
@@ -393,8 +482,10 @@ VALUES (
         '2021-09-15'
     );
 
-INSERT INTO prestamo_previo
-VALUES (
+INSERT INTO
+    prestamo_previo
+VALUES
+    (
         2000002,
         1,
         '99999999X',
@@ -403,8 +494,10 @@ VALUES (
     );
 
 -- más historiales de usos previos
-INSERT INTO uso_previo
-VALUES (
+INSERT INTO
+    uso_previo
+VALUES
+    (
         3000002,
         1,
         '00000000Y',
@@ -412,8 +505,10 @@ VALUES (
         '2021-03-15'
     );
 
-INSERT INTO uso_previo
-VALUES (
+INSERT INTO
+    uso_previo
+VALUES
+    (
         3000001,
         1,
         '00000000Y',
@@ -421,8 +516,10 @@ VALUES (
         '2021-04-15'
     );
 
-INSERT INTO uso_previo
-VALUES (
+INSERT INTO
+    uso_previo
+VALUES
+    (
         3000002,
         1,
         '00000000Y',
@@ -430,8 +527,10 @@ VALUES (
         '2021-05-15'
     );
 
-INSERT INTO uso_previo
-VALUES (
+INSERT INTO
+    uso_previo
+VALUES
+    (
         3000001,
         3,
         '00000000Y',
@@ -439,13 +538,59 @@ VALUES (
         '2021-06-15'
     );
 
-    -- estilos para los creadores
-    INSERT INTO pertenecer_estilo VALUES (1000000, 'Modernismo');
-    INSERT INTO pertenecer_estilo VALUES (1000001, 'Realismo');
-    INSERT INTO pertenecer_estilo VALUES (1000001, 'Crítica social');
-    INSERT INTO pertenecer_estilo VALUES (1000002, 'Pop');
-    INSERT INTO pertenecer_estilo VALUES (1000003, 'Realismo Mágico');
-    INSERT INTO pertenecer_estilo VALUES (1000004, 'Renacimiento');
-    INSERT INTO pertenecer_estilo VALUES (1000005, 'Rock');
-    INSERT INTO pertenecer_estilo VALUES (1000006, 'Rock Progresivo');
+-- estilos para los creadores
+INSERT INTO
+    pertenecer_estilo
+VALUES
+    (1000000, 'Modernismo');
+
+-- Fitzgerald
+INSERT INTO
+    pertenecer_estilo
+VALUES
+    (1000001, 'Realismo');
+
+-- Risco
+INSERT INTO
+    pertenecer_estilo
+VALUES
+    (1000001, 'Crítica social');
+
+-- Risco
+INSERT INTO
+    pertenecer_estilo
+VALUES
+    (1000002, 'Pop');
+
+-- Jackson
+INSERT INTO
+    pertenecer_estilo
+VALUES
+    (1000003, 'Realismo Mágico');
+
+-- García Márquez
+INSERT INTO
+    pertenecer_estilo
+VALUES
+    (1000004, 'Renacimiento');
+
+-- Cervantes
+INSERT INTO
+    pertenecer_estilo
+VALUES
+    (1000005, 'Rock');
+
+-- AC/DC
+INSERT INTO
+    pertenecer_estilo
+VALUES
+    (1000006, 'Rock');
+
+-- Pink Floyd
+INSERT INTO
+    pertenecer_estilo
+VALUES
+    (1000006, 'Rock Progresivo');
+
+-- Pink Floyd
 COMMIT;
