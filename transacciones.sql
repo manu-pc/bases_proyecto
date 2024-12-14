@@ -20,7 +20,7 @@ INSERT INTO material_prestamo (tipo, titulo, genero, fecha_publicacion, creador,
 VALUES ('libro', 'Crimen y castigo', 'Novela', '1866-01-01', v_autor_id, 'El Mensajero Ruso', '9780140449136', NULL, NULL, NULL)
 RETURNING id_material INTO v_libro_id;
 
--- Se presta este libro a María, siendo el préstamo manejado por Juan.
+-- Se presta este libro a María, siENDo el préstamo manejado por Juan.
 UPDATE material_prestamo
 SET socio_prestamo = v_socio_id, empleado_prestamo = v_empleado_id, fecha_prestamo = CURRENT_DATE
 WHERE id_material = v_libro_id;
@@ -40,21 +40,21 @@ COMMIT;
 -- La fecha de devolución (y préstamo) debería ser la fecha actual (cuando se ejecute la transacción), y el socio y empleado deberían ser María y Juan, respectivamente.
 
 --transacción 2 (llegada de nuevos ordenadores y uso de uno de ellos por un nuevo socio)
-begin;
+BEGIN;
 
 do $$
 
-declare
+    DECLARE
 	v_socio_id integer;
 	v_empleado_id char(9) := '99999999X'; --helena
 	v_ordenador_id integer;
-begin
+BEGIN
 
-insert into socio values (default, 'Pablo', 'Rodríguez', 'Pérez', '2001-04-12', 'Ciudad, Calle nº15', '678969493')
-returning id_socio into v_socio_id;
+INSERT INTO socio VALUES (default, 'Pablo', 'Rodríguez', 'Pérez', '2001-04-12', 'Ciudad, Calle nº15', '678969493')
+RETURNING id_socio INTO v_socio_id;
 
-insert into ordenador (id_ordenador, so, modelo)
-values 
+INSERT INTO ordenador (id_ordenador, so, modelo)
+VALUES 
 	(default, 'Pop OS', 'MSI'),
 	(default, 'Pop OS', 'MSI'),
 	(default, 'Windows 11', 'Asus'),
@@ -62,92 +62,97 @@ values
 
 -- ordenador estrenado por pablo
 
-insert into ordenador (so, modelo, usuario, fecha_prestamo, empleado_prestamo) values ('macOS', 'Apple', v_socio_id, '2024-11-29', v_empleado_id)
-returning id_ordenador into v_ordenador_id;
+INSERT INTO ordenador (so, modelo, usuario, fecha_prestamo, empleado_prestamo) VALUES ('macOS', 'Apple', v_socio_id, '2024-11-29', v_empleado_id)
+RETURNING id_ordenador INTO v_ordenador_id;
 
 
 -- acaba de usar el ordenador
-update ordenador 
-set usuario = null, fecha_prestamo = null, empleado_prestamo = null
-where id_ordenador = v_ordenador_id;
+UPDATE ordenador 
+SET usuario = null, fecha_prestamo = null, empleado_prestamo = null
+WHERE id_ordenador = v_ordenador_id;
 
 
 
-end $$;
+END $$;
 
-commit;
+COMMIT;
 
---transacción 3
+--transacción 3 (nuevo empleado, ascenso, préstamo y turno)
 
-begin;
+BEGIN;
 
 -- nuevo empleado bibliotecario
-insert into empleado values ('44445555X', 'Carla', 'Sánchez', 'López', '1999-04-23', '2024-11-30', 1200);
+INSERT INTO empleado VALUES ('44445555X', 'Carla', 'Sánchez', 'López', '1999-04-23', '2024-11-30', 1200);
 
-insert into cargo values ('44445555X', 'bibliotecario');
+INSERT INTO cargo VALUES ('44445555X', 'bibliotecario');
 
 
--- ascienden a helena
-update cargo
-set cargo = 'gerente'
-where dni_empleado = '99999999X';
+-- asciENDen a helena
+UPDATE cargo
+SET cargo = 'gerente'
+WHERE dni_empleado = '99999999X';
 
 -- realizan un prestamo
-update material_prestamo 
-set socio_prestamo = 1, empleado_prestamo = '44445555X', fecha_prestamo = '2024-11-30'
-where id_material = 2000005;
+UPDATE material_prestamo 
+SET socio_prestamo = 1, empleado_prestamo = '44445555X', fecha_prestamo = '2024-11-30'
+WHERE id_material = 2000005;
 -- turno de Carla
-insert into turno values ('44445555X', '2024-11-30', '08:00:00', '14:00:00');
+INSERT INTO turno VALUES ('44445555X', '2024-11-30', '08:00:00', '14:00:00');
 
-commit;
+COMMIT;
 
--- transaccion 4
-
-begin;
+-- transaccion 4 (nuevos autores y obras, préstamos, devolución y turnos)
+BEGIN;
 do $$
-    declare
+    DECLARE
         nuevo_socio integer;
         nuevo_libro_2 integer;
         nuevo_libro_1 integer;
         creador_1 integer;
         creador_2 integer;
-    begin
-        insert into creador
-        values (default, 'Eric', 'Arthur', 'Blair', '1903-06-13', 'India Britanica')
-        returning id_creador into creador_1;
-        insert into creador
-        values (default, 'Patrick', 'James', 'Rothfuss', '1973-08-13', 'Estadounidense')
-        returning id_creador into creador_2;
-        insert into material_prestamo
-        values (default, 'libro', '1984', 'distopia', '2011-10-14', creador_1, 'Secker & Warburg', '9780451524935', null, null, null)
-        returning id_material into nuevo_libro_1;
-        insert into material_prestamo
-        values (default, 'libro', 'El nombre del viento', 'fantasia', '2009-04-27', creador_2, 'Plaza & Janés', '9788498385542', null, null, null)
-        returning id_material into nuevo_libro_2;
+    BEGIN
+        INSERT INTO creador -- se añade a George Orwell y a Patrick Rothfuss como nuevos creadores.
+        VALUES (default, 'Eric', 'Arthur', 'Blair', '1903-06-13', 'India Britanica')
+        RETURNING id_creador INTO creador_1;
+        INSERT INTO creador
+        VALUES (default, 'Patrick', 'James', 'Rothfuss', '1973-08-13', 'Estadounidense')
+        RETURNING id_creador INTO creador_2;
+        INSERT INTO material_prestamo -- se añaden dos nuevos libros a la base de datos
+        VALUES (default, 'libro', '1984', 'Ciencia ficción', '2011-10-14', creador_1, 'Secker & Warburg', '9780451524935', null, null, null)
+        RETURNING id_material INTO nuevo_libro_1;
+        INSERT INTO material_prestamo
+        VALUES (default, 'libro', 'El nombre del viento', 'Fantasía', '2009-04-27', creador_2, 'Plaza & Janés', '9788498385542', null, null, null)
+        RETURNING id_material INTO nuevo_libro_2;
 
-        insert into socio values (default, 'María', 'Fernández', 'Souto', '2004-04-02', 'Ciudad, Calle nº2', '682346273')
-        returning id_socio into nuevo_socio;
+         
+        INSERT INTO socio VALUES (default, 'María', 'Fernández', 'Souto', '2004-04-02', 'Ciudad, Calle nº2', '682346273') -- se añade un nuevo socio a la base de datos
+        RETURNING id_socio INTO nuevo_socio;
 
-        update material_prestamo
-            set socio_prestamo = nuevo_socio, empleado_prestamo = '44445555X', fecha_prestamo = '2024-12-04'
-            where id_material = nuevo_libro_2;
+        -- se realiza un préstamo de El nombre del viento a María
+        UPDATE material_prestamo
+            SET socio_prestamo = nuevo_socio, empleado_prestamo = '44445555X', fecha_prestamo = '2024-12-04'
+            WHERE id_material = nuevo_libro_2;
 
-        insert into turno values ('44445555X', '2024-12-04', '08:00:00', '14:00:00');
+        -- se añade un turno para Carla
+        INSERT INTO turno VALUES ('44445555X', '2024-12-04', '08:00:00', '14:00:00');
 
-        update material_prestamo
-            set socio_prestamo = null, empleado_prestamo = null, fecha_prestamo = null
-            where id_material = nuevo_libro_2;
+        -- se devuelve el libro
+        UPDATE material_prestamo
+            SET socio_prestamo = null, empleado_prestamo = null, fecha_prestamo = null
+            WHERE id_material = nuevo_libro_2;
 
-        update material_prestamo
-            set socio_prestamo = nuevo_socio, empleado_prestamo = '00000000Y', fecha_prestamo = '2024-12-04'
-            where id_material = nuevo_libro_1;
+        -- se realiza un préstamo de 1984 a María
+        UPDATE material_prestamo
+            SET socio_prestamo = nuevo_socio, empleado_prestamo = '00000000Y', fecha_prestamo = '2024-12-04'
+            WHERE id_material = nuevo_libro_1;
 
-        insert into turno values ('00000000Y', '2024-12-04', '16:00:00', '21:00:00');
+        -- se añade un turno para Juan
+        INSERT INTO turno VALUES ('00000000Y', '2024-12-04', '16:00:00', '21:00:00');
 
-end $$;
-commit;
+END $$;
+COMMIT;
 
--- Transacción 5
+-- Transacción 5: Nuevo CD y libros, préstamos y devolución, además de un nuevo ordenador y su uso
 BEGIN;
 
 DO $$
@@ -171,7 +176,7 @@ INSERT INTO creador (nombre, apellido1, apellido2, fecha_nacimiento, nacionalida
 VALUES ('Ludwig', 'van', 'Beethoven', '1770-12-17', 'Alemania')
 RETURNING id_creador INTO nuevo_creador_id;
 
--- Se añade un nuevo CD a la base de datos
+-- Se añade un nuevo CD a la base de datos, y se presta directamente a Carlos
 INSERT INTO material_prestamo (tipo, titulo, genero, fecha_publicacion, creador, productora, isbn, socio_prestamo, empleado_prestamo, fecha_prestamo)
 VALUES ('CD', 'Sinfonía No. 9', 'Clásica', '1824-05-07', nuevo_creador_id, 'Deutsche Grammophon', NULL, nuevo_socio_id, empleado_id, CURRENT_DATE)
 RETURNING id_material INTO nuevo_cd_id;
