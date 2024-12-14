@@ -17,6 +17,10 @@ DROP TABLE IF EXISTS empleado CASCADE;
 
 DROP TABLE IF EXISTS socio CASCADE;
 
+DROP TABLE IF EXISTS pertenecer_estilo CASCADE;
+
+
+
 DROP SEQUENCE IF EXISTS ordenador_seq CASCADE;
 
 DROP SEQUENCE IF EXISTS material_seq CASCADE;
@@ -79,6 +83,13 @@ CREATE TABLE creador (
 );
 
 CREATE SEQUENCE material_seq START 2000000;
+
+CREATE TABLE pertenecer_estilo (
+    id_creador INT,
+    estilo VARCHAR(20),
+    PRIMARY KEY (id_creador, estilo),
+    FOREIGN KEY (id_creador) REFERENCES creador (id_creador) ON DELETE CASCADE ON UPDATE CASCADE
+);
 
 CREATE TABLE material_prestamo (
     id_material INT PRIMARY KEY DEFAULT NEXTVAL ('material_seq'),

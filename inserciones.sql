@@ -439,4 +439,13 @@ VALUES (
         '2021-06-15'
     );
 
+    -- estilos para los creadores
+    INSERT INTO pertenecer_estilo VALUES (1000000, 'Modernismo');
+    INSERT INTO pertenecer_estilo VALUES (1000001, 'Realismo');
+    INSERT INTO pertenecer_estilo VALUES (1000001, 'Crítica social');
+    INSERT INTO pertenecer_estilo VALUES (1000002, 'Pop');
+    INSERT INTO pertenecer_estilo VALUES (1000003, 'Realismo Mágico');
+    INSERT INTO pertenecer_estilo VALUES (1000004, 'Renacimiento');
+    INSERT INTO pertenecer_estilo VALUES (1000005, 'Rock');
+    INSERT INTO pertenecer_estilo VALUES (1000006, 'Rock Progresivo');
 COMMIT;

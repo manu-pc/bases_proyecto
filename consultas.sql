@@ -106,3 +106,4 @@ SELECT id_ordenador,
     modelo
 FROM ordenador
 WHERE fecha_prestamo IS NULL;
+
