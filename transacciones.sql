@@ -1,5 +1,4 @@
 -- Transacción 1:
-BEGIN;
 
 -- Variables
 DO $$ DECLARE v_autor_id INTEGER;
@@ -91,13 +90,11 @@ COMMIT;
 -- Si, tras esto, realizasemos una consulta a la tabla 'prestamo_previo', deberíamos ver una nueva entrada con los datos del préstamo y devolución de Crimen y castigo.
 -- La fecha de devolución (y préstamo) debería ser la fecha actual (cuando se ejecute la transacción), y el socio y empleado deberían ser María y Juan, respectivamente.
 --transacción 2 (llegada de nuevos ordenadores y uso de uno de ellos por un nuevo socio)
-BEGIN;
 
 DO $$ DECLARE v_socio_id integer;
 
-v_empleado_id char(9) := '99999999X';
+v_empleado_id char(9) := '99999999X'; -- ID de Helena
 
---helena
 v_ordenador_id integer;
 
 BEGIN
@@ -140,22 +137,12 @@ VALUES
         v_empleado_id
     ) RETURNING id_ordenador INTO v_ordenador_id;
 
--- acaba de usar el ordenador
-UPDATE
-    ordenador
-SET
-    usuario = NULL,
-    fecha_prestamo = NULL,
-    empleado_prestamo = NULL
-WHERE
-    id_ordenador = v_ordenador_id;
 
 END $$;
 
 COMMIT;
 
 --transacción 3 (nuevo empleado, ascenso, préstamo y turno)
-BEGIN;
 
 -- nuevo empleado bibliotecario
 INSERT INTO
@@ -208,7 +195,6 @@ VALUES
 COMMIT;
 
 -- transaccion 4 (nuevos autores y obras, préstamos, devolución y turnos)
-BEGIN;
 
 DO $$ DECLARE nuevo_socio integer;
 
@@ -361,7 +347,6 @@ END $$;
 COMMIT;
 
 -- Transacción 5: Nuevo CD y libros, préstamos y devolución, además de un nuevo ordenador y su uso
-BEGIN;
 
 DO $$ DECLARE nuevo_socio_id INTEGER;
 

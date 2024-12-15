@@ -1,40 +1,23 @@
 -- seleccionar todos los socios
-SELECT
-    id_socio,
-    nombre,
-    apellido1,
-    apellido2,
-    fecha_nacimiento,
-    direccion,
-    telefono
+SELECT *
 FROM
     socio;
 
 -- seleccionar todos los creadores
-SELECT
-    id_creador,
-    nombre,
-    apellido1,
-    apellido2,
-    fecha_nacimiento,
-    nacionalidad
+SELECT *
 FROM
     creador;
 
 -- seleccionar los nombres, tipos e id de todos los materiales
 SELECT
-    titulo,
-    tipo,
     id_material,
-    genero,
-    fecha_publicacion,
-    creador,
-    productora,
-    isbn
+    tipo,
+    titulo
 FROM
     material_prestamo
 ORDER BY
-    id_material;
+    tipo;
+
 
 -- seleccionar todos los ordenadores
 SELECT
@@ -45,15 +28,7 @@ FROM
     ordenador;
 
 -- Obtener todos los libros en préstamo
-SELECT
-    id_material,
-    tipo,
-    titulo,
-    genero,
-    fecha_publicacion,
-    creador,
-    productora,
-    isbn
+SELECT *
 FROM
     material_prestamo
 WHERE

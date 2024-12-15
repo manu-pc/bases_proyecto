@@ -594,3 +594,14 @@ VALUES
 
 -- Pink Floyd
 COMMIT;
+
+-- La siguiente modificación, si se han cargado las funciones,
+-- debería de devolver una excepción. Se usa para comprobar su funcionamiento correcto.
+UPDATE
+    material_prestamo
+SET
+    socio_prestamo = 2,
+    empleado_prestamo = '00000000Y',
+    fecha_prestamo = '2023-01-01'
+WHERE
+    titulo = 'Don Quijote de la Mancha';
