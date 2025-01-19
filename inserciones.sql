@@ -561,7 +561,7 @@ INSERT INTO
     pertenecer_estilo
 VALUES
     (1000002, 'Pop');
-
+file:///home/mpereiroc/Downloads/Apuntes%20completos%20BD_151119171345.pdf
 -- Jackson
 INSERT INTO
     pertenecer_estilo
